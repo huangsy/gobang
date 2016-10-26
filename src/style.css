@@ -1,0 +1,41 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+ul, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.row {
+    overflow: hidden;
+    margin-bottom: -1px;
+}
+
+.cell {
+    border: 1px solid #333;
+    float: left;
+    margin-right: -1px;
+    background-color: gray;
+    position: relative;
+}
+
+.black::after, .white::after {
+    content: '';
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+}
+
+.black::after {
+    background-color: black;
+}
+
+.white::after {
+    background-color: white;
+}
