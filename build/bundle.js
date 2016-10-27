@@ -91,6 +91,7 @@
 	            var blackMatrix = [];
 	            var whiteWin = false;
 	            var blackWin = false;
+	            var wincheck = new _check2.default(m, n);
 	
 	            var _loop = function _loop(i) {
 	                var row = document.createElement('ul');
@@ -111,12 +112,12 @@
 	                            flag = false;
 	                            target.className += ' white';
 	                            whiteMatrix[i][j] = 1;
-	                            whiteWin = (0, _check2.default)(whiteMatrix, i, j);
+	                            whiteWin = wincheck.check(whiteMatrix, i, j);
 	                        } else {
 	                            flag = true;
 	                            target.className += ' black';
 	                            blackMatrix[i][j] = 1;
-	                            blackWin = (0, _check2.default)(blackMatrix, i, j);
+	                            blackWin = wincheck.check(blackMatrix, i, j);
 	                        }
 	                        setTimeout(function () {
 	                            if (whiteWin) {
@@ -161,62 +162,94 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.default = check;
-	// 水平检查
-	function checkHorizontal(matrix, m, n) {
-	    var count = 0;
-	    for (var i = n - 4; i <= n + 4; i++) {
-	        if (matrix[m][i]) {
-	            count++;
-	        } else if (count < 5) {
-	            count = 0;
-	        }
-	    }
-	    return count >= 5;
-	}
 	
-	// 垂直检查
-	function checkVertical(matrix, m, n) {
-	    var count = 0;
-	    for (var i = m - 4; i <= m + 4; i++) {
-	        if (matrix[i] && matrix[i][n]) {
-	            count++;
-	        } else if (count < 5) {
-	            count = 0;
-	        }
-	    }
-	    return count >= 5;
-	}
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	// 斜线检查
-	function checkSlant(matrix, m, n) {
-	    var count = 0;
-	    for (var i = m + 4, j = n - 4; i >= m - 4; i--, j++) {
-	        if (matrix[i] && matrix[i][j]) {
-	            count++;
-	        } else if (count < 5) {
-	            count = 0;
-	        }
-	    }
-	    return count >= 5;
-	}
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	// 反斜线检查
-	function checkBackSlant(matrix, m, n) {
-	    var count = 0;
-	    for (var i = m - 4, j = n - 4; i <= m + 4; i++, j++) {
-	        if (matrix[i] && matrix[i][j]) {
-	            count++;
-	        } else if (count < 5) {
-	            count = 0;
-	        }
-	    }
-	    return count >= 5;
-	}
+	var WinCheck = function () {
+	    function WinCheck(row, col) {
+	        _classCallCheck(this, WinCheck);
 	
-	function check(matrix, i, j) {
-	    return checkHorizontal(matrix, i, j) || checkVertical(matrix, i, j) || checkSlant(matrix, i, j) || checkBackSlant(matrix, i, j);
-	}
+	        this.row = row - 1;
+	        this.col = col - 1;
+	    }
+	
+	    _createClass(WinCheck, [{
+	        key: "check",
+	        value: function check(matrix, i, j) {
+	            return this.checkHorizontal(matrix, i, j) || this.checkVertical(matrix, i, j) || this.checkSlant(matrix, i, j) || this.checkBackSlant(matrix, i, j);
+	        }
+	
+	        // 水平检查
+	
+	    }, {
+	        key: "checkHorizontal",
+	        value: function checkHorizontal(matrix, m, n) {
+	            var count = 0;
+	            for (var i = Math.max(0, n - 4); i <= Math.min(this.col, n + 4); i++) {
+	                if (matrix[m][i]) {
+	                    count++;
+	                } else if (count < 5) {
+	                    count = 0;
+	                }
+	            }
+	            return count >= 5;
+	        }
+	
+	        // 垂直检查
+	
+	    }, {
+	        key: "checkVertical",
+	        value: function checkVertical(matrix, m, n) {
+	            var count = 0;
+	            for (var i = Math.max(0, m - 4); i <= Math.min(this.row, m + 4); i++) {
+	                if (matrix[i][n]) {
+	                    count++;
+	                } else if (count < 5) {
+	                    count = 0;
+	                }
+	            }
+	            return count >= 5;
+	        }
+	
+	        // 斜线检查
+	
+	    }, {
+	        key: "checkSlant",
+	        value: function checkSlant(matrix, m, n) {
+	            var count = 0;
+	            for (var i = Math.min(this.row, m + 4), j = Math.max(0, n - 4); i >= Math.max(0, m - 4) && j <= Math.min(this.col, n + 4); i--, j++) {
+	                if (matrix[i][j]) {
+	                    count++;
+	                } else if (count < 5) {
+	                    count = 0;
+	                }
+	            }
+	            return count >= 5;
+	        }
+	
+	        // 反斜线检查
+	
+	    }, {
+	        key: "checkBackSlant",
+	        value: function checkBackSlant(matrix, m, n) {
+	            var count = 0;
+	            for (var i = Math.max(0, m - 4), j = Math.max(0, n - 4); i <= Math.min(this.row, m + 4) && j <= Math.min(this.col, n + 4); i++, j++) {
+	                if (matrix[i][j]) {
+	                    count++;
+	                } else if (count < 5) {
+	                    count = 0;
+	                }
+	            }
+	            return count >= 5;
+	        }
+	    }]);
+	
+	    return WinCheck;
+	}();
+	
+	exports.default = WinCheck;
 
 /***/ }
 /******/ ]);

@@ -1,3 +1,3 @@
-import Draw from './draw';
+import DrawAI from './draw';
 
-new Draw().render();
+new DrawAI().render();

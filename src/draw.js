@@ -1,4 +1,4 @@
-import check from './check';
+import WinCheck from './check';
 export default class Draw {
     render() {
         let container = document.getElementById('container');
@@ -7,9 +7,10 @@ export default class Draw {
         let n = 15;
         let flag = false;
         let whiteMatrix = [];
-        var blackMatrix = [];
-        var whiteWin = false;
-        var blackWin = false;
+        let blackMatrix = [];
+        let whiteWin = false;
+        let blackWin = false;
+        let wincheck = new WinCheck(m, n);
         for(let i = 0; i < m; i++) {
             let row = document.createElement('ul');
             let whiteRow = [];
@@ -28,12 +29,12 @@ export default class Draw {
                         flag = false;
                         target.className += ' white';
                         whiteMatrix[i][j] = 1;
-                        whiteWin = check(whiteMatrix, i, j);
+                        whiteWin = wincheck.check(whiteMatrix, i, j);
                     } else {
                         flag = true;
                         target.className += ' black';
                         blackMatrix[i][j] = 1;
-                        blackWin = check(blackMatrix, i, j);
+                        blackWin = wincheck.check(blackMatrix, i, j);
                     }
                     setTimeout(() => {
                         if (whiteWin) {
